@@ -1,0 +1,4 @@
+Usage: /Users/kylechen/Developer/Umich/eecs281/p0/project0_debug [-m resize|reserve|nosize] | -h
+This program is to help you learn command-line processing,
+reading data into a vector, the difference between resize and
+reserve and how to properly read until end-of-file.
