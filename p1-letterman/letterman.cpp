@@ -1,8 +1,9 @@
 // Project Identifier: 50EB44D3F029ED934858FFFCEAC3547C68251FC9
 
 #include "letterman.hpp"
-#include "command_line.hpp"
 
-int main()
+class LetterMan
 {
+public:
+private:
 }
