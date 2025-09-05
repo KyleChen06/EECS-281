@@ -2,13 +2,14 @@
 #include <iostream>
 #include <deque>
 #include <vector>
+#include <algorithm>
 
 #include "letterman.hpp"
 
 using namespace std;
 
 // Constructor
-Letterman::Letterman(istream &input, string begin_word, string end_word)
+Letterman::Letterman(string begin_word, string end_word)
 {
   this->begin_word = begin_word;
   this->end_word = end_word;
@@ -24,25 +25,27 @@ void Letterman::morph()
 // prints the output
 void Letterman::output()
 {
+  for (auto &item : dictionary)
+  {
+    cout << item.word << endl;
+  }
 }
 
 // reads in lines from file specified in CLI
 void Letterman::make_dict()
 {
   string line;
-  int n;
-  bool simple = 1;
+  bool simple = true;
 
   getline(cin, line);
   if (line == "C")
-    simple = 0;
+    simple = false;
   getline(cin, line);
-  n = stoi(line);
 
   while (getline(cin, line))
   {
     // skip comment lines or if blank
-    if (line[0] == '/' || line == "")
+    if (line[0] == '/' || line.empty())
       continue;
 
     // if it is simple, we just add in the line and continue
@@ -60,72 +63,81 @@ void Letterman::make_dict()
         dictionary.push_back({insert});
       }
       // insert-each
-      else if (line.find('['))
+      else if (line.find('[') != string::npos)
       {
-        int start, end = -1;
+        size_t start = string::npos, end = string::npos;
         string insert = "";
         insert_each(insert, line, start, end);
 
         // string insert == "ch[p": start begin at the index after '['
-        for (int i = start + 1; i < end; ++i)
+        for (size_t i = start + 1; i < end; ++i)
         {
           insert[start] = line[i];
           dictionary.push_back({insert});
         }
       }
       // swap
-      else if (line.find('!'))
+      else if (line.find('!') != string::npos)
       {
         string insert = "";
-        int swap = -1;
-        no_special_char(insert, line, swap);
+        size_t swap_index = string::npos;
+        no_special_char(insert, line, swap_index);
         dictionary.push_back({insert});
-        reverse(insert.begin() + swap - 2, insert.begin() + swap - 1);
-        dictionary.push_back({insert});
+        if (swap_index >= 2 && swap_index < insert.length())
+        {
+          swap(insert[swap_index - 2], insert[swap_index - 1]);
+          dictionary.push_back({insert});
+        }
       }
       // double
-      else if (line.find('?'))
+      else if (line.find('?') != string::npos)
       {
         string insert = "";
-        int index = -1;
+        size_t index = string::npos;
         no_special_char(insert, line, index);
         dictionary.push_back({insert});
-        insert = insert.substr(0, index) + insert[index - 1] + insert.substr(index + 1);
-        dictionary.push_back({insert});
+        if (index < insert.length())
+        {
+          insert = insert.substr(0, index) + insert[index - 1] + insert.substr(index);
+          dictionary.push_back({insert});
+        }
       }
       // no changes
       else
       {
         dictionary.push_back({line});
       }
-
     } // if ... else ...
-
-    // stores the begin/end index of the words
-    if (dictionary.back().word == begin_word)
-      begin_ind = dictionary.size() - 1;
-    else if (dictionary.back().word == end_word)
-      end_ind = dictionary.size() - 1;
   } // while (getline)
+
+  for (size_t i = 0; i < dictionary.size(); ++i)
+  {
+    if (dictionary[i].word == begin_word)
+      begin_ind = static_cast<int>(dictionary.size() - 1);
+    else if (dictionary[i].word == end_word)
+      end_ind = static_cast<int>(dictionary.size() - 1);
+  }
 
   if (begin_ind == -1)
   {
-    cerr << "" << endl;
+    cerr << "Begin word not found" << endl;
     exit(1);
   }
   else if (end_ind == -1)
   {
-    cerr << "" << endl;
+    cerr << "End word not found" << endl;
     exit(1);
   }
 }
 
 // gets the word with '[' at the index where we insert-each of the characters instead
 // i.e line = ch[io]p will return ch[p, we then use the start and end to get each of middle characters
-void insert_each(string &insert, const string &line, int &start, int &end)
+void Letterman::insert_each(string &insert, const string &line, size_t &start, size_t &end)
 {
+  start = string::npos;
+  end = string::npos;
 
-  for (int i = 0; i < line.length(); i++)
+  for (size_t i = 0; i < line.length(); i++)
   {
     if (line[i] == '[')
     {
@@ -137,7 +149,7 @@ void insert_each(string &insert, const string &line, int &start, int &end)
     else
     {
       // dont add to string if it is between '[' && ']'
-      if (start != -1 && end == -1)
+      if (start != string::npos && end == string::npos)
         continue;
       insert += line[i];
     }
@@ -146,11 +158,13 @@ void insert_each(string &insert, const string &line, int &start, int &end)
 
 // changes the word without the singular special character,
 // and changes the index of special character by reference
-void no_special_char(string &insert, const string &line, int &index)
+void Letterman::no_special_char(string &insert, const string &line, size_t &index)
 {
-  for (int i = 0; i < line.length(); i++)
+  index = string::npos;
+
+  for (size_t i = 0; i < line.length(); i++)
   {
-    if (line[i] == '!')
+    if (line[i] == '!' || line[i] == '?')
       index = i;
     else
       insert += line[i];

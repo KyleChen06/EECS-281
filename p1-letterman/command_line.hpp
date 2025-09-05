@@ -8,7 +8,9 @@
 // store all options from CLI
 struct Options
 {
-  bool container; // 0 == stack, 1 == queue
+  bool container = 0; // 0 == stack, 1 == queue
+  bool s = 0;
+  bool q = 0;
   bool change = 0;
   bool swap = 0;
   bool length = 0;

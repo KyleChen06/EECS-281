@@ -50,19 +50,21 @@ void getOptions(int argc, char **argv, Options &options)
       options.length = 1;
       break;
     case 's':
-      if (options.container == 0 || options.container == 1)
+      if (options.q)
       {
         cerr << "Conflicting or duplicate stack and queue specified" << endl;
         exit(1);
       }
+      options.s = 1;
       options.container = 0;
       break;
     case 'q':
-      if (options.container == 0 || options.container == 1)
+      if (options.s)
       {
         cerr << "Conflicting or duplicate stack and queue specified" << endl;
         exit(1);
       }
+      options.q = 1;
       options.container = 1;
       break;
     case 'e':
@@ -74,9 +76,9 @@ void getOptions(int argc, char **argv, Options &options)
     case 'o':
       if (optarg)
       {
-        if (optarg == "M")
+        if (*optarg == 'M')
           options.output = 1;
-        else if (optarg == "W")
+        else if (*optarg == 'W')
           options.output = 0;
         else
           cerr << "Invalid output mode specified" << endl;

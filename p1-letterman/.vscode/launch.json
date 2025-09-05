@@ -3,14 +3,27 @@
   {
     "type": "lldb",
     "request": "launch",
-    "name": "Debug",
-    "program": "${workspaceFolder}/main_debug",
-    "args": ["-h"],
-    "stdio": ["sample-r.txt", "output.txt", null],
+    "name": "simple dict",
+    "program": "${workspaceFolder}/letter_debug",
+    "args": ["--stack", "--change", "--begin", "chip", "--end", "stop"],
+    "stdio": ["spec-simple.txt", "output.txt", null],
+    "env": {
+      "ASAN_OPTIONS": "abort_on_error=1:detect_leaks=0"
+    },
+    "cwd": "${workspaceFolder}"
+  },
+  {
+    "type": "lldb",
+    "request": "launch",
+    "name": "complex dict",
+    "program": "${workspaceFolder}/letter_debug",
+    "args": ["--stack", "--change", "--begin", "chip", "--end", "stop"],
+    "stdio": ["spec-complex.txt", "output.txt", null],
     "env": {
       "ASAN_OPTIONS": "abort_on_error=1:detect_leaks=0"
     },
     "cwd": "${workspaceFolder}"
   }
+
   ]
 }

@@ -10,7 +10,7 @@ class Letterman
 {
 public:
   // Constructor
-  Letterman(std::istream &input, string begin_word, string end_word);
+  Letterman(std::string begin_word, std::string end_word);
 
   // Letterman does his thing :D
   void morph();
@@ -52,6 +52,10 @@ private:
 
   // finds all sufficiently similar words to current and adds it to container
   void investigate();
+
+  // helper functions
+  void insert_each(std::string &insert, const std::string &line, size_t &start, size_t &end);
+  void no_special_char(std::string &insert, const std::string &line, size_t &index);
 };
 
 #endif // LETTERMAN_HPP
