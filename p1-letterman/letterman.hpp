@@ -4,19 +4,19 @@
 
 #include <vector>
 #include <deque>
+#include <iostream>
 
 class Letterman
 {
 public:
   // Constructor
-  Letterman();
+  Letterman(std::istream &input, string begin_word, string end_word);
 
   // Letterman does his thing :D
   void morph();
 
   // prints the output
-  void
-  output();
+  void output();
 
 private:
   struct DictStruct
@@ -36,8 +36,8 @@ private:
   std::string begin_word;
   std::string end_word;
   std::string current;
-  int begin_ind;
-  int end_ind;
+  int begin_ind = -1;
+  int end_ind = -1;
   std::deque<int> container;
   size_t discovered = 0;
 
