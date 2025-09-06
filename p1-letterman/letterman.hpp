@@ -10,19 +10,19 @@ class Letterman
 {
 public:
   // Constructor
-  Letterman(std::string begin_word, std::string end_word);
+  Letterman(std::string begin_word, std::string end_word, bool container_type, bool output_version);
 
   // Letterman does his thing :D
-  void morph();
+  void morph(const bool c, const bool p, const bool l);
 
-  // prints the output
+  // print the output
   void output();
 
 private:
   struct DictStruct
   {
     std::string word;
-    int prev = -1;
+    size_t prev = std::string::npos;
     bool discovered = false;
 
     // made for std::sort to compare prev values
@@ -36,26 +36,32 @@ private:
   std::string begin_word;
   std::string end_word;
   std::string current;
-  int begin_ind = -1;
-  int end_ind = -1;
-  std::deque<int> container;
+  bool stack_or_queue;     // false for stack, true for queue
+  bool output_version = 0; // false for word, true for modification
+  size_t begin_ind = std::string::npos;
+  size_t end_ind = std::string::npos;
+  size_t curr_ind = std::string::npos;
+  std::deque<size_t> container;
   size_t discovered = 0;
+  size_t investigated = 0;
 
   // reads in lines from file specified in CLI
   void make_dict();
 
-  // gets the next word from container and sets it to current
-  void fetch();
-
-  // removes the current word from container
-  void remove();
+  // fetches the next word and deletes it from the search container
+  bool get_next();
 
   // finds all sufficiently similar words to current and adds it to container
-  void investigate();
+  bool investigate(const bool c, const bool p, const bool l);
 
-  // helper functions
+  // helper functions for make_dict();
   void insert_each(std::string &insert, const std::string &line, size_t &start, size_t &end);
   void no_special_char(std::string &insert, const std::string &line, size_t &index);
+
+  // helper functions for investigate, returns index at which change occurred, if needed the letter as well
+  size_t change(const std::string &current_word, const std::string &new_word, char &letter);
+  size_t swap(const std::string &current_word, const std::string &new_word);
+  size_t length(const std::string &current_word, const std::string &new_word, char &letter);
 };
 
 #endif // LETTERMAN_HPP

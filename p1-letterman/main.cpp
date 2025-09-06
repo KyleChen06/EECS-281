@@ -13,10 +13,9 @@ int main(int argc, char *argv[])
   getOptions(argc, argv, options);
 
   // defines the object to call on, and initializes most of the variables
-  Letterman letterman(options.begin, options.end);
+  Letterman letterman(options.begin, options.end, options.container, options.output);
+  letterman.morph(options.change, options.swap, options.length);
   letterman.output();
-
-  // cerr if
 
   return 0;
 }

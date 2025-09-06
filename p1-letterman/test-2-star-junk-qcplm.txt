@@ -1,0 +1,10 @@
+C
+7
+// Complex dictionary from spec, tests all special complex read-ins, should find no link
+ch[io]p
+junk
+st!ar
+sh[io]p
+shot
+stop&
+le?t

@@ -1,0 +1,6 @@
+C
+3
+// possible by swap but not change: tests for not checking cli args
+st!ar
+ar!ts
+tars
