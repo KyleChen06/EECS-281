@@ -1,29 +1,119 @@
 {
   "configurations": [
-  {
-    "type": "lldb",
-    "request": "launch",
-    "name": "simple dict",
-    "program": "${workspaceFolder}/letter_debug",
-    "args": ["--stack", "--change", "--begin", "chip", "--end", "stop"],
-    "stdio": ["spec-simple.txt", "output.txt", null],
-    "env": {
-      "ASAN_OPTIONS": "abort_on_error=1:detect_leaks=0"
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "simple dict stack",
+      "program": "${workspaceFolder}/letter_debug",
+      "args": [
+        "--stack",
+        "--change",
+        "--begin",
+        "chip",
+        "--end",
+        "stop"
+      ],
+      "stdio": [
+        "spec-simple.txt",
+        "output.txt",
+        null
+      ],
+      "env": {
+        "ASAN_OPTIONS": "abort_on_error=1:detect_leaks=0"
+      },
+      "cwd": "${workspaceFolder}"
     },
-    "cwd": "${workspaceFolder}"
-  },
-  {
-    "type": "lldb",
-    "request": "launch",
-    "name": "complex dict",
-    "program": "${workspaceFolder}/letter_debug",
-    "args": ["--stack", "--change", "--begin", "chip", "--end", "stop"],
-    "stdio": ["spec-complex.txt", "output.txt", null],
-    "env": {
-      "ASAN_OPTIONS": "abort_on_error=1:detect_leaks=0"
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "simple dict queue",
+      "program": "${workspaceFolder}/letter_debug",
+      "args": [
+        "--queue",
+        "--change",
+        "--begin",
+        "chip",
+        "--end",
+        "stop"
+      ],
+      "stdio": [
+        "spec-simple.txt",
+        "output.txt",
+        null
+      ],
+      "env": {
+        "ASAN_OPTIONS": "abort_on_error=1:detect_leaks=0"
+      },
+      "cwd": "${workspaceFolder}"
     },
-    "cwd": "${workspaceFolder}"
-  }
-
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "complex dict",
+      "program": "${workspaceFolder}/letter_debug",
+      "args": [
+        "--stack",
+        "--change",
+        "--begin",
+        "chip",
+        "--end",
+        "stop"
+      ],
+      "stdio": [
+        "spec-complex.txt",
+        "output.txt",
+        null
+      ],
+      "env": {
+        "ASAN_OPTIONS": "abort_on_error=1:detect_leaks=0"
+      },
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "simple_second",
+      "program": "${workspaceFolder}/letter_debug",
+      "args": [
+        "--stack",
+        "-clp",
+        "--begin",
+        "train",
+        "--end",
+        "soil"
+      ],
+      "stdio": [
+        "second-example-simple.txt",
+        "output.txt",
+        null
+      ],
+      "env": {
+        "ASAN_OPTIONS": "abort_on_error=1:detect_leaks=0"
+      },
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "length test",
+      "program": "${workspaceFolder}/letter_debug",
+      "args": [
+        "--stack",
+        "-l",
+        "--begin",
+        "ab",
+        "--end",
+        "e"
+      ],
+      "stdio": [
+        "test-7-ab-e-sl.txt",
+        "output.txt",
+        null
+      ],
+      "env": {
+        "ASAN_OPTIONS": "abort_on_error=1:detect_leaks=0"
+      },
+      "cwd": "${workspaceFolder}"
+    }
   ]
 }

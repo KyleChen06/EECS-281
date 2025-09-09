@@ -43,13 +43,13 @@ private:
   size_t curr_ind = std::string::npos;
   std::deque<size_t> container;
   size_t discovered = 0;
-  size_t investigated = 0;
+  size_t investigated = 1; // beginning word is first investigated
 
   // reads in lines from file specified in CLI
   void make_dict();
 
   // fetches the next word and deletes it from the search container
-  bool get_next();
+  bool get_next(bool found);
 
   // finds all sufficiently similar words to current and adds it to container
   bool investigate(const bool c, const bool p, const bool l);

@@ -1,6 +1,5 @@
 // Project Identifier: 50EB44D3F029ED934858FFFCEAC3547C68251FC9
 #include <algorithm>
-#include <iomanip>
 #include <iostream>
 
 #include "command_line.hpp"
@@ -52,7 +51,7 @@ void getOptions(int argc, char **argv, Options &options)
     case 's':
       if (options.q)
       {
-        cerr << "Conflicting or duplicate stack and queue specified" << endl;
+        cerr << "Conflicting or duplicate stack and queue specified" << "\n";
         exit(1);
       }
       options.s = 1;
@@ -61,7 +60,7 @@ void getOptions(int argc, char **argv, Options &options)
     case 'q':
       if (options.s)
       {
-        cerr << "Conflicting or duplicate stack and queue specified" << endl;
+        cerr << "Conflicting or duplicate stack and queue specified" << "\n";
         exit(1);
       }
       options.q = 1;
@@ -81,8 +80,10 @@ void getOptions(int argc, char **argv, Options &options)
         else if (*optarg == 'W')
           options.output = 0;
         else
-          cerr << "Invalid output mode specified" << endl;
-        exit(1);
+        {
+          cerr << "Invalid output mode specified" << "\n";
+          exit(1);
+        }
       }
       break;
     default:
@@ -96,31 +97,31 @@ void getOptions(int argc, char **argv, Options &options)
   // error handling
   if (options.container != 0 && options.container != 1)
   {
-    cerr << "Must specify one of stack or queue" << endl;
+    cerr << "Must specify one of stack or queue" << "\n";
     exit(1);
   } // if ..container
 
   if (options.change == 0 && options.length == 0 && options.swap == 0)
   {
-    cerr << "Must specify at least one modification mode (change length swap)" << endl;
+    cerr << "Must specify at least one modification mode (change length swap)" << "\n";
     exit(1);
   } // if ..mode
 
   if (options.begin == "")
   {
-    cerr << "Beginning word not specified" << endl;
+    cerr << "Beginning word not specified" << "\n";
     exit(1);
   } // if ..begin
 
   if (options.end == "")
   {
-    cerr << "Ending word not specified" << endl;
+    cerr << "Ending word not specified" << "\n";
     exit(1);
   } // if ..end
 
   if (!options.length && options.begin.length() != options.end.length())
   {
-    cerr << "The first and last words must have the same length when length mode is off" << endl;
+    cerr << "The first and last words must have the same length when length mode is off" << "\n";
     exit(1);
   } // if ..length
 } // getOptions()

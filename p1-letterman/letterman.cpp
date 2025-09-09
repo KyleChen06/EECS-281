@@ -10,10 +10,8 @@ using namespace std;
 
 // Constructor
 Letterman::Letterman(string begin_word, string end_word, bool container_type, bool output_version)
+    : begin_word(begin_word), end_word(end_word), current(begin_word)
 {
-  this->begin_word = begin_word;
-  this->end_word = end_word;
-  current = begin_word;
   if (container_type == false)
     stack_or_queue = false; // stack
   else
@@ -29,10 +27,12 @@ void Letterman::morph(const bool c, const bool p, const bool l)
   while (investigated < dictionary.size())
   {
     bool found = investigate(c, p, l); // if found is true that means that the next item from get_next will be end_word
-    if (!get_next())                   // no more items in the container
+    if (!get_next(found))              // no more items in the container
       break;
     if (found) // we found the end word :D
+    {
       break;
+    }
   }
 }
 
@@ -41,31 +41,34 @@ void Letterman::output()
 {
   if (curr_ind != end_ind)
   {
-    cout << "No solution, " << discovered << " words discovered." << endl;
+    cout << "No solution, " << discovered << " words discovered." << "\n";
   }
   else
   {
     vector<size_t> reverse_order;
     reverse_order.reserve(investigated);
 
-    cout << "Words in morph: " << investigated << endl;
-    cout << begin_word << endl;
+    cout << "Words in morph: " << investigated << "\n";
+    cout << begin_word << "\n";
 
     // create a reverse_ordered vector with the indexes of the words
-    for (size_t i = 0; curr_ind != begin_ind; ++i)
+    while (curr_ind != begin_ind)
     {
-      reverse_order[i] = curr_ind;
+      reverse_order.push_back(curr_ind);
       curr_ind = dictionary[curr_ind].prev;
     }
     if (output_version) // modification
     {
-      cout << "not implemented yet" << endl;
+      for (size_t i = reverse_order.size(); i > 0; i--)
+      {
+        cout << dictionary[reverse_order[i - 1]].word << "\n";
+      }
     }
     else // word
     {
-      for (size_t i = reverse_order.size() - 1; i >= 0; i++)
+      for (size_t i = reverse_order.size(); i > 0; i--)
       {
-        cout << dictionary[i].word << endl;
+        cout << dictionary[reverse_order[i - 1]].word << "\n";
       }
     }
   }
@@ -153,19 +156,22 @@ void Letterman::make_dict()
   for (size_t i = 0; i < dictionary.size(); ++i)
   {
     if (dictionary[i].word == begin_word)
+    {
       begin_ind = i;
+      dictionary[i].discovered = true;
+    }
     else if (dictionary[i].word == end_word)
       end_ind = i;
   }
 
   if (begin_ind == std::string::npos)
   {
-    cerr << "Begin word not found" << endl;
+    cerr << "Begin word not found" << "\n";
     exit(1);
   }
   else if (end_ind == std::string::npos)
   {
-    cerr << "End word not found" << endl;
+    cerr << "End word not found" << "\n";
     exit(1);
   }
   curr_ind = begin_ind;

@@ -1,2 +1,6 @@
-Words in morph: 3
-chip
+Words in morph: 5
+train
+trail
+tail
+sail
+soil

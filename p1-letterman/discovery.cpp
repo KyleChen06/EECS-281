@@ -9,7 +9,7 @@
 using namespace std;
 
 // fetches the next word and deletes it from the search container, if successful we return 1, if no more words, return 0
-bool Letterman::get_next()
+bool Letterman::get_next(bool found)
 {
   if (container.empty())
     return false;
@@ -17,8 +17,16 @@ bool Letterman::get_next()
   if (stack_or_queue) // queue
   {
     current = dictionary[container.front()].word;
-    curr_ind = container.front();
-    container.pop_front();
+    if (found)
+    {
+      curr_ind = container.back();
+      return 0;
+    }
+    else
+    {
+      curr_ind = container.front();
+      container.pop_front();
+    };
   }
   else // stack
   {
@@ -101,15 +109,18 @@ size_t Letterman::swap(const std::string &current_word, const std::string &new_w
   {
     if (current_word[i] != new_word[i])
     {
-      ++diff;
-      if (diff > 2)
+      if (diff > 1)
         return std::string::npos;
-      if (index == std::string::npos)
+      if (current_word[i] == new_word[i + 1] && current_word[i + 1] == new_word[i])
+      {
+        diff++;
         index = i;
+      }
+      else
+        return std::string::npos;
     }
   }
-
-  return (diff == 2) ? index : std::string::npos;
+  return index;
 } // swap();
 
 size_t Letterman::length(const std::string &current_word, const std::string &new_word, char &letter)
@@ -140,6 +151,11 @@ size_t Letterman::length(const std::string &current_word, const std::string &new
         {
           letter = new_word[ind2];
           ++ind2;
+        }
+        else
+        {
+          letter = current_word[ind1];
+          ++ind1;
         }
       }
     }
