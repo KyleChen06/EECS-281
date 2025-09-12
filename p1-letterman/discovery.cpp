@@ -14,6 +14,9 @@ bool Letterman::get_next(bool found)
   if (container.empty())
     return false;
 
+  // container isn't empty so we add a valid item to investigatred list
+  investigated++;
+
   if (stack_or_queue) // queue
   {
     current = dictionary[container.front()].word;
@@ -35,8 +38,6 @@ bool Letterman::get_next(bool found)
     container.pop_back();
   }
 
-  investigated++;
-
   return true;
 }
 
@@ -48,13 +49,14 @@ bool Letterman::investigate(const bool c, const bool p, const bool l)
   {
     string new_word = dictionary[i].word;
     char temp;
+    bool length_match = current.length() == new_word.length();
 
     // skip iteration if the word has been discovered or is equal to the current word
     // if length mode is not on and the word lengths don't match continue
     // if length mode is on, skip if length diff > 1
     if (dictionary[i].discovered || current == new_word)
       continue;
-    else if (!l && current.length() != new_word.length())
+    else if (!l && !length_match)
       continue;
     else if (abs(static_cast<int>(new_word.length() - current.length())) > 1)
       continue;
@@ -62,9 +64,9 @@ bool Letterman::investigate(const bool c, const bool p, const bool l)
     // if x option is enabled and that word is a viable morph from current then we add to deque
     // make sure to change discovered val
     // set the prev ind to the current words index
-    if ((c && change(current, new_word, temp) != std::string::npos) ||
-        (p && swap(current, new_word) != std::string::npos) ||
-        (l && length(current, new_word, temp) != std::string::npos))
+    if ((c && length_match && change(current, new_word, temp) != std::string::npos) ||
+        (p && length_match && swap(current, new_word) != std::string::npos) ||
+        (l && !length_match && insert_delete(current, new_word, temp) != std::string::npos))
     {
       container.push_back(i);
       dictionary[i].discovered = true;
@@ -89,7 +91,7 @@ size_t Letterman::change(const std::string &current_word, const std::string &new
     {
       ++diff;
       if (diff > 1)
-        break;
+        return std::string::npos;
       if (index == std::string::npos)
       {
         index = i;
@@ -97,7 +99,7 @@ size_t Letterman::change(const std::string &current_word, const std::string &new
       }
     }
   }
-  return (diff == 1) ? index : std::string::npos;
+  return index;
 }
 
 size_t Letterman::swap(const std::string &current_word, const std::string &new_word)
@@ -109,62 +111,50 @@ size_t Letterman::swap(const std::string &current_word, const std::string &new_w
   {
     if (current_word[i] != new_word[i])
     {
-      if (diff > 1)
+      if (diff++)
         return std::string::npos;
       if (current_word[i] == new_word[i + 1] && current_word[i + 1] == new_word[i])
       {
-        diff++;
         index = i;
+        i++;
       }
-      else
-        return std::string::npos;
     }
   }
   return index;
 } // swap();
 
-size_t Letterman::length(const std::string &current_word, const std::string &new_word, char &letter)
+size_t Letterman::insert_delete(const std::string &current_word, const std::string &new_word, char &letter)
 {
   size_t index = std::string::npos;
-  size_t len1 = current_word.length();
-  size_t len2 = new_word.length();
-  size_t n = max(len1, len2);
   size_t diff = 0;
-  size_t ind1 = 0, ind2 = 0;
+  size_t n = max(current_word.length(), new_word.length());
+  size_t i1 = 0, i2 = 0;
 
-  // if the length didn't change skip, we already account for being too long in investigate();
-  if (abs(static_cast<int>(len1 - len2)) != 1)
-    return std::string::npos;
-
-  while (ind1 < n && ind2 < n)
+  while (i1 < n || i2 < n)
   {
-    if (current_word[ind1] != new_word[ind2])
+    char char_curr = (i1 == current_word.length()) ? ' ' : current_word[i1];
+    char char_new = (i2 == new_word.length()) ? ' ' : new_word[i2];
+    if (char_curr != char_new)
     {
-      ++diff;
-      if (diff > 1)
-        break;
+      if (++diff > 1)
+        return std::string::npos;
       if (index == std::string::npos)
       {
-        index = ind1;
-        // current word < new word means we insert so keep ind1 at the same spot
-        if (len1 < len2)
-        {
-          letter = new_word[ind2];
-          ++ind2;
+        index = i1;
+        if (current_word.length() > new_word.length())
+        { // deletion
+          i2--;
         }
         else
-        {
-          letter = current_word[ind1];
-          ++ind1;
+        { // insertion
+          i1--;
+          letter = new_word[i2];
         }
       }
     }
-    else
-    {
-      ++ind1;
-      ++ind2;
-    } // if ... else
-  } // while
+    i1++;
+    i2++;
+  }
 
-  return (diff == 1) ? index : std::string::npos;
+  return index;
 } // length();

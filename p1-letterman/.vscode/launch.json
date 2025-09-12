@@ -6,16 +6,16 @@
       "name": "simple dict stack",
       "program": "${workspaceFolder}/letter_debug",
       "args": [
-        "--stack",
-        "--change",
         "--begin",
         "chip",
         "--end",
-        "stop"
+        "stop",
+        "-sc",
+        "--output=M",
       ],
       "stdio": [
         "spec-simple.txt",
-        "output.txt",
+        null,
         null
       ],
       "env": {
@@ -38,7 +38,7 @@
       ],
       "stdio": [
         "spec-simple.txt",
-        "output.txt",
+        null,
         null
       ],
       "env": {
@@ -57,11 +57,13 @@
         "--begin",
         "chip",
         "--end",
-        "stop"
+        "stop",
+        "--output",
+        "M"
       ],
       "stdio": [
         "spec-complex.txt",
-        "output.txt",
+        null,
         null
       ],
       "env": {
@@ -72,19 +74,19 @@
     {
       "type": "lldb",
       "request": "launch",
-      "name": "simple_second",
+      "name": "test-1",
       "program": "${workspaceFolder}/letter_debug",
       "args": [
-        "--stack",
-        "-clp",
+        "-qclp",
         "--begin",
-        "train",
+        "cat",
         "--end",
-        "soil"
+        "breathe",
+        "--output=M"
       ],
       "stdio": [
-        "second-example-simple.txt",
-        "output.txt",
+        "test-1-cat-breathe-qcplm.txt",
+        null,
         null
       ],
       "env": {
@@ -95,19 +97,157 @@
     {
       "type": "lldb",
       "request": "launch",
-      "name": "length test",
+      "name": "test-2",
       "program": "${workspaceFolder}/letter_debug",
       "args": [
-        "--stack",
-        "-l",
+        "-qcpl",
         "--begin",
-        "ab",
+        "star",
         "--end",
-        "e"
+        "junk",
+        "--output=M"
       ],
       "stdio": [
-        "test-7-ab-e-sl.txt",
-        "output.txt",
+        "test-2-star-junk-qcplm.txt",
+        null,
+        null
+      ],
+      "env": {
+        "ASAN_OPTIONS": "abort_on_error=1:detect_leaks=0"
+      },
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "test-5",
+      "program": "${workspaceFolder}/letter_debug",
+      "args": [
+        "-scpl",
+        "--begin",
+        "sentinels",
+        "--end",
+        "sentinels",
+        "--output=M"
+      ],
+      "stdio": [
+        "test-5-sentinels-sentinels-scplm.txt",
+        null,
+        null
+      ],
+      "env": {
+        "ASAN_OPTIONS": "abort_on_error=1:detect_leaks=0"
+      },
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "test-7",
+      "program": "${workspaceFolder}/letter_debug",
+      "args": [
+        "-sl",
+        "--begin",
+        "cat",
+        "--end",
+        "path",
+        "--output=W"
+      ],
+      "stdio": [
+        "test-7-cat-path-sl.txt",
+        null,
+        null
+      ],
+      "env": {
+        "ASAN_OPTIONS": "abort_on_error=1:detect_leaks=0"
+      },
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "test-8",
+      "program": "${workspaceFolder}/letter_debug",
+      "args": [
+        "-qpc",
+        "--begin",
+        "warm",
+        "--end",
+        "cool",
+        "--output=W"
+      ],
+      "stdio": [
+        "test-8-warm-cool-qpc.txt",
+        null,
+        null
+      ],
+      "env": {
+        "ASAN_OPTIONS": "abort_on_error=1:detect_leaks=0"
+      },
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "test-9",
+      "program": "${workspaceFolder}/letter_debug",
+      "args": [
+        "-qp",
+        "--begin",
+        "star",
+        "--end",
+        "rats",
+        "--output=W"
+      ],
+      "stdio": [
+        "test-9-star-rats-qp.txt",
+        null,
+        null
+      ],
+      "env": {
+        "ASAN_OPTIONS": "abort_on_error=1:detect_leaks=0"
+      },
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "test-11",
+      "program": "${workspaceFolder}/letter_debug",
+      "args": [
+        "-qclp",
+        "--begin",
+        "sun",
+        "--end",
+        "sky",
+        "--output=W"
+      ],
+      "stdio": [
+        "test-11-sun-sky-qclp.txt",
+        null,
+        null
+      ],
+      "env": {
+        "ASAN_OPTIONS": "abort_on_error=1:detect_leaks=0"
+      },
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "test-12",
+      "program": "${workspaceFolder}/letter_debug",
+      "args": [
+        "-qclp",
+        "--begin",
+        "fasfd",
+        "--end",
+        "fasfddd",
+        "--output=M"
+      ],
+      "stdio": [
+        "test-12-fasfd-fasfddd-qclpm.txt",
+        null,
         null
       ],
       "env": {

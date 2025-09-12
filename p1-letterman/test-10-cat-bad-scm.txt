@@ -1,0 +1,8 @@
+S
+5
+// Basic change operations
+cat
+bat
+bet
+bed
+bad

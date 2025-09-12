@@ -1,0 +1,5 @@
+S
+2
+// swaps at non-adjacent spots
+test
+sett

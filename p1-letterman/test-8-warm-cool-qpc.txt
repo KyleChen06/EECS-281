@@ -1,0 +1,16 @@
+S
+13
+// test change/swap with differing lengths in between
+warm
+warme
+warmer
+carmer
+carmel
+carel
+care
+core
+croe
+crow
+croo
+coo
+cool

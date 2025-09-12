@@ -1,4 +1,0 @@
-C
-15
-// test complex with large number of []
-sh[oi]p

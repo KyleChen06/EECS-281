@@ -1,9 +1,11 @@
 C
-7
+9
 // Complex dictionary from spec, tests all special complex read-ins, should find no link
-ch[io]p
+ch[ioalsdfkmwqner]p
 junk
 st!ar
+stra
+straw
 sh[io]p
 shot
 stop&

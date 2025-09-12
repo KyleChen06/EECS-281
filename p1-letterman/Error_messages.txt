@@ -9,8 +9,8 @@ If you want to have more debugging help, you can add a second line after
 the first.  The autograder won't show it to you, but it could be useful
 for your own testing.  For example:
 
-    cerr << "Invalid output mode specified" << "\n";
-    cerr << "  Invalid output mode is: " << outMode << "\n";
+    cerr << "Invalid output mode specified" << endl;
+    cerr << "  Invalid output mode is: " << outMode << endl;
 
 Some of these may not be in the "Errors you must check for" section, but
 are still useful for debugging purposes.

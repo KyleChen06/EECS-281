@@ -2,7 +2,7 @@
 #include <algorithm>
 #include <iostream>
 
-#include "command_line.hpp"
+#include "letterman.hpp"
 
 #include <getopt.h>
 using namespace std;
@@ -10,7 +10,7 @@ using namespace std;
 // Process the command line; there is no return value, but the Options
 // struct is passed by reference and is modified by this function to send
 // information back to the calling function.
-void getOptions(int argc, char **argv, Options &options)
+void Letterman::getOptions(int argc, char **argv)
 {
   // These are used with getopt_long()
   opterr = static_cast<int>(false); // Let us handle all error output for command line options
@@ -26,102 +26,107 @@ void getOptions(int argc, char **argv, Options &options)
       {"change", no_argument, nullptr, 'c'},
       {"length", no_argument, nullptr, 'l'},
       {"swap", no_argument, nullptr, 'p'},
-      {"output", optional_argument, nullptr, 'o'},
+      {"output", required_argument, nullptr, 'o'},
       {"help", no_argument, nullptr, 'h'},
       {nullptr, 0, nullptr, '\0'},
   }; // longOptions[]
   // NOLINTEND
 
-  while ((choice = getopt_long(argc, argv, "o::b:e:hsqclp", static_cast<option *>(longOptions), &index)) != -1)
+  while ((choice = getopt_long(argc, argv, "o:b:e:hsqclp", static_cast<option *>(longOptions), &index)) != -1)
   {
     switch (choice)
     {
     case 'h':
       // printHelp(*argv);
-      exit(0);
+      break;
     case 'c':
-      options.change = 1;
+      c = 1;
       break;
     case 'p':
-      options.swap = 1;
+      p = 1;
       break;
     case 'l':
-      options.length = 1;
+      l = 1;
       break;
     case 's':
-      if (options.q)
+      if (queue)
       {
-        cerr << "Conflicting or duplicate stack and queue specified" << "\n";
+        cerr << "Conflicting or duplicate stack and queue specified" << endl;
         exit(1);
       }
-      options.s = 1;
-      options.container = 0;
+      stack = 1;
+      stack_or_queue = false;
       break;
     case 'q':
-      if (options.s)
+      if (stack)
       {
-        cerr << "Conflicting or duplicate stack and queue specified" << "\n";
+        cerr << "Conflicting or duplicate stack and queue specified" << endl;
         exit(1);
       }
-      options.q = 1;
-      options.container = 1;
+      queue = 1;
+      stack_or_queue = true;
       break;
     case 'e':
-      options.end = optarg;
+      end_word = optarg;
       break;
     case 'b':
-      options.begin = optarg;
+      begin_word = optarg;
+      current = begin_word;
       break;
     case 'o':
       if (optarg)
       {
-        if (*optarg == 'M')
-          options.output = 1;
-        else if (*optarg == 'W')
-          options.output = 0;
+        if (string(optarg) == "M")
+        {
+          output_version = 1;
+        }
+        else if (string(optarg) == "W")
+        {
+          output_version = 0;
+        }
         else
         {
-          cerr << "Invalid output mode specified" << "\n";
+          cerr << "Invalid output mode specified" << endl;
           exit(1);
         }
       }
       break;
     default:
-      cerr << "Unknown command line option\n"
-           << flush;
+      cerr << "Unknown command line option" << endl;
       exit(1);
 
     } // switch ..choice
   } // while
 
   // error handling
-  if (options.container != 0 && options.container != 1)
+  if (stack == 0 && queue == 0)
   {
-    cerr << "Must specify one of stack or queue" << "\n";
+    cerr << "Must specify one of stack or queue" << endl;
     exit(1);
   } // if ..container
 
-  if (options.change == 0 && options.length == 0 && options.swap == 0)
+  if (c == 0 && l == 0 && p == 0)
   {
-    cerr << "Must specify at least one modification mode (change length swap)" << "\n";
+    cerr << "Must specify at least one modification mode (change length swap)" << endl;
     exit(1);
   } // if ..mode
 
-  if (options.begin == "")
+  if (begin_word.empty())
   {
-    cerr << "Beginning word not specified" << "\n";
+    cerr << "Beginning word not specified" << endl;
     exit(1);
   } // if ..begin
 
-  if (options.end == "")
+  if (end_word.empty())
   {
-    cerr << "Ending word not specified" << "\n";
+    cerr << "Ending word not specified" << endl;
     exit(1);
   } // if ..end
 
-  if (!options.length && options.begin.length() != options.end.length())
+  // length is not on and begin/end aren't same length
+  if (!l && begin_word.length() != end_word.length())
   {
-    cerr << "The first and last words must have the same length when length mode is off" << "\n";
+    cerr << "The first and last words must have the same length when length mode is off" << endl;
     exit(1);
   } // if ..length
 } // getOptions()

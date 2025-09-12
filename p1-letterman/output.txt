@@ -1,6 +1,1 @@
-Words in morph: 5
-train
-trail
-tail
-sail
-soil
+No solution, 2 words discovered.

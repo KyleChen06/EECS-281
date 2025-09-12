@@ -1,0 +1,9 @@
+C
+5
+// testing more complex -- test at end of strings
+// also test with multipl comment lines - should not take this one
+fasf&
+fasfd?
+fasfddd
+fasfdddq
+rfasfdb!i
