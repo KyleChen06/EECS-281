@@ -68,7 +68,7 @@ void Letterman::output()
           cout << "c," << index << "," << letter << endl;
         else if (len_check && (index = swap(current_word, new_word)) != std::string::npos)
           cout << "s," << index << endl;
-        else if ((index = insert_delete(current_word, new_word, letter)) != std::string::npos)
+        else if ((index = length(current_word, new_word, letter)) != std::string::npos)
         {
           if (current_word.length() > new_word.length()) // deletion
             cout << "d," << index << endl;
@@ -98,9 +98,12 @@ void Letterman::make_dict()
     simple = false;
   getline(cin, line);
 
-  int n = stoi(line);
+  size_t n = static_cast<size_t>(stoi(line)) + 1;
 
-  while (getline(cin, line) && n >= 0)
+  if (simple)
+    dictionary.reserve(n);
+
+  while (getline(cin, line) && n > 0)
   {
     // skip comment lines or if blank
     if (line[0] == '/' || line.empty())

@@ -64,7 +64,7 @@ bool Letterman::investigate(const bool c, const bool p, const bool l)
     // set the prev ind to the current words index
     if ((c && length_match && change(current, new_word, temp) != std::string::npos) ||
         (p && length_match && swap(current, new_word) != std::string::npos) ||
-        (l && !length_match && insert_delete(current, new_word, temp) != std::string::npos))
+        (l && !length_match && length(current, new_word, temp) != std::string::npos))
     {
       container.push_back(i);
       dictionary[i].discovered = true;
@@ -122,7 +122,7 @@ size_t Letterman::swap(const std::string &current_word, const std::string &new_w
   return index;
 } // swap();
 
-size_t Letterman::insert_delete(const std::string &current_word, const std::string &new_word, char &letter)
+size_t Letterman::length(const std::string &current_word, const std::string &new_word, char &letter)
 {
   size_t index = std::string::npos;
   size_t diff = 0;

@@ -63,7 +63,7 @@ private:
   // helper functions for investigate, returns index at which change occurred, if needed the letter as well
   size_t change(const std::string &current_word, const std::string &new_word, char &letter);
   size_t swap(const std::string &current_word, const std::string &new_word);
-  size_t insert_delete(const std::string &current_word, const std::string &new_word, char &letter);
+  size_t length(const std::string &current_word, const std::string &new_word, char &letter);
 };
 
 #endif // LETTERMAN_HPP
