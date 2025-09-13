@@ -82,7 +82,7 @@
         "cat",
         "--end",
         "breathe",
-        "--output=M"
+        "--output=W"
       ],
       "stdio": [
         "test-1-cat-breathe-qcplm.txt",

@@ -14,22 +14,20 @@ bool Letterman::get_next(bool found)
   if (container.empty())
     return false;
 
+  if (found)
+  {
+    curr_ind = container.back();
+    return 0;
+  }
+
   // container isn't empty so we add a valid item to investigatred list
   investigated++;
 
   if (stack_or_queue) // queue
   {
     current = dictionary[container.front()].word;
-    if (found)
-    {
-      curr_ind = container.back();
-      return 0;
-    }
-    else
-    {
-      curr_ind = container.front();
-      container.pop_front();
-    };
+    curr_ind = container.front();
+    container.pop_front();
   }
   else // stack
   {
@@ -111,7 +109,8 @@ size_t Letterman::swap(const std::string &current_word, const std::string &new_w
   {
     if (current_word[i] != new_word[i])
     {
-      if (diff++)
+      diff++;
+      if (diff > 1)
         return std::string::npos;
       if (current_word[i] == new_word[i + 1] && current_word[i + 1] == new_word[i])
       {
