@@ -54,10 +54,9 @@ private:
   bool get_next(bool found);
 
   // finds all sufficiently similar words to current and adds it to container
-  bool investigate(const bool c, const bool p, const bool l);
+  bool investigate();
 
   // helper functions for make_dict();
-  void insert_each(std::string &insert, const std::string &line, size_t &start, size_t &end);
   void no_special_char(std::string &insert, const std::string &line, size_t &index);
 
   // helper functions for investigate, returns index at which change occurred, if needed the letter as well

@@ -40,31 +40,30 @@ bool Letterman::get_next(bool found)
 }
 
 // finds all sufficiently similar words to current and adds it to container, if the final word is found, we return true to stop program
-bool Letterman::investigate(const bool c, const bool p, const bool l)
+bool Letterman::investigate()
 {
   // go through the dictionary and find words that are sufficiently similar
   for (size_t i = 0; i < dictionary.size(); ++i)
   {
-    string new_word = dictionary[i].word;
     char temp;
-    bool length_match = current.length() == new_word.length();
+    bool length_match = current.length() == dictionary[i].word.length();
 
     // skip iteration if the word has been discovered or is equal to the current word
     // if length mode is not on and the word lengths don't match continue
     // if length mode is on, skip if length diff > 1
-    if (dictionary[i].discovered || current == new_word)
+    if (dictionary[i].discovered)
       continue;
     else if (!l && !length_match)
       continue;
-    else if (abs(static_cast<int>(new_word.length() - current.length())) > 1)
+    else if (abs(static_cast<int>(dictionary[i].word.length() - current.length())) > 1)
       continue;
 
     // if x option is enabled and that word is a viable morph from current then we add to deque
     // make sure to change discovered val
     // set the prev ind to the current words index
-    if ((c && length_match && change(current, new_word, temp) != std::string::npos) ||
-        (p && length_match && swap(current, new_word) != std::string::npos) ||
-        (l && !length_match && length(current, new_word, temp) != std::string::npos))
+    if ((c && length_match && change(current, dictionary[i].word, temp) != std::string::npos) ||
+        (p && length_match && swap(current, dictionary[i].word) != std::string::npos) ||
+        (l && !length_match && length(current, dictionary[i].word, temp) != std::string::npos))
     {
       container.push_back(i);
       dictionary[i].discovered = true;

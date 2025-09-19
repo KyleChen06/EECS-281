@@ -67,10 +67,10 @@ void Letterman::getOptions(int argc, char **argv)
       stack_or_queue = true;
       break;
     case 'e':
-      end_word = optarg;
+      end_word = string(optarg);
       break;
     case 'b':
-      begin_word = optarg;
+      begin_word = string(optarg);
       current = begin_word;
       break;
     case 'o':
