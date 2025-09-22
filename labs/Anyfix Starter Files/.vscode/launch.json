@@ -1,0 +1,12 @@
+{
+  "configurations": [
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "Launch",
+      "program": "${workspaceFolder}/testAnyfix_debug",
+      "args": [],
+      "cwd": "${workspaceFolder}"
+    }
+  ]
+}
