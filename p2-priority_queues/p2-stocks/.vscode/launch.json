@@ -1,0 +1,25 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "Input Test",
+      "program": "${workspaceFolder}/market_debug",
+      "args": [],
+      "stdio": [
+        "spec-input-TL.txt",
+        null,
+        null
+      ],
+      "env": {
+        "ASAN_OPTIONS": "abort_on_error=1:detect_leaks=0"
+      },
+      "cwd": "${workspaceFolder}"
+    }
+
+  ]
+}

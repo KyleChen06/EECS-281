@@ -31,18 +31,24 @@ private:
     size_t priority;
 
     // TODO: make a functor for comparisons
+    bool operator<(const Trader &other) const
+    {
+      if (this->time == other.time)
+        return this->priority > other.priority;
+      else
+        return this->time > other.time;
+    }
   };
 
   struct Stock // will have multiple different types
   {
-    size_t stock_num;
     std::priority_queue<Trader> buyers;
     std::priority_queue<Trader> sellers;
   };
 
   size_t num_traders;
   size_t num_stocks;
-  std::vector<Stock> stocks; // .reserve based on input
+  std::vector<Stock> stocks; // .resize based on input, vector index will be stock #
   size_t current_timestamp = 0;
 
   // PR MODE pvs
@@ -54,7 +60,7 @@ private:
   // read in the traders
   void readInput();
 
-  void processOrders(istream &inputStream);
+  void processInput(std::istream &inputStream);
 };
 
 #endif

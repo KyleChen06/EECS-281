@@ -21,11 +21,11 @@ void Market::readInput()
 
   cin >> temp >> temp; // get number of stocks
   num_stocks = static_cast<size_t>(stoi(temp));
-  stocks.reserve(num_stocks);
+  stocks.resize(num_stocks);
 
   // use helper functions to read in rest based on inputMode
-  if (inputMode = 0)
-    processOrders(cin);
+  if (inputMode == 0)
+    processInput(cin);
   else
   {
     stringstream ss;
@@ -39,12 +39,12 @@ void Market::readInput()
     cin >> temp >> temp;
     arr_rate = static_cast<size_t>(stoi(temp));
 
-    P2random::PR_init(ss, seed, num_traders, num_stocks, num_orders, arr_rate);
-    processOrders(ss);
+    P2random::PR_init(ss, static_cast<unsigned int>(seed), static_cast<unsigned int>(num_traders), static_cast<unsigned int>(num_stocks), static_cast<unsigned int>(num_orders), static_cast<unsigned int>(arr_rate));
+    processInput(ss);
   }
 }
 
-void Market::processOrders(istream &inputStream)
+void Market::processInput(istream &inputStream)
 {
   string time_stamp;
   string intent;
@@ -56,7 +56,16 @@ void Market::processOrders(istream &inputStream)
   while (inputStream >> time_stamp >> intent >> trader_id >> stock_id >> cost >> inventory)
   {
     size_t stock_num = static_cast<size_t>(stoi(stock_id.substr(1)));
-    size_t priority = (intent.front() == 'B') ? stocks[stock_num].buyers.size() : stocks[stock_num].sellers.size();
+    size_t priority;
+    if (intent[0] == 'B')
+    {
+      priority = stocks[stock_num].buyers.size();
+    }
+    else
+    {
+      priority = stocks[stock_num].sellers.size();
+    }
+    // size_t priority = (intent.front() == 'B') ? stocks[stock_num].buyers.size() : stocks[stock_num].sellers.size();
     bool buy = (intent.front() == 'B') ? true : false;
 
     // create trader object to place into Market
