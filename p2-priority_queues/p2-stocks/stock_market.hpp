@@ -6,8 +6,7 @@
 #include <iostream>
 #include <queue>
 
-class Market
-{
+class Market {
 public:
   // constructor
   Market(int argc, char **argv);
@@ -22,8 +21,7 @@ private:
   bool i_out = 0;     // trader info
   bool t_out = 0;     // time traveller
 
-  struct Trader
-  {
+  struct Trader {
     size_t time;
     size_t priority;
     bool intent; // false == sell, true == buy
@@ -34,50 +32,40 @@ private:
   };
 
   // keep track of information for trader info
-  struct Trader_Info
-  {
+  struct Trader_Info {
     size_t bought = 0;
     size_t sold = 0;
     int net = 0;
   };
 
   // we want highest price first because sellers want to sell at highest price
-  struct BuyerComp
-  {
-    bool operator()(const Trader &left, const Trader &right) const
-    {
-      if (left.price == right.price)
-      {
+  struct BuyerComp {
+    bool operator()(const Trader &left, const Trader &right) const {
+      if (left.price == right.price) {
         if (left.time == right.time)
           return left.priority > right.priority;
         else
           return left.time > right.time;
-      }
-      else
+      } else
         return left.price < right.price;
     }
   };
 
   // we want lowest price first because buyers want to buy at lowest price
-  struct SellerComp
-  {
-    bool operator()(const Trader &left, const Trader &right) const
-    {
-      if (left.price == right.price)
-      {
+  struct SellerComp {
+    bool operator()(const Trader &left, const Trader &right) const {
+      if (left.price == right.price) {
         if (left.time == right.time)
           return left.priority > right.priority;
         else
           return left.time > right.time;
-      }
-      else
+      } else
         return left.price > right.price;
     }
   };
 
   // different stocks hold different information
-  struct Stock
-  {
+  struct Stock {
     std::priority_queue<Trader, std::vector<Trader>, BuyerComp> buyers;
     std::priority_queue<Trader, std::vector<Trader>, SellerComp> sellers;
     size_t num_traded = 0;

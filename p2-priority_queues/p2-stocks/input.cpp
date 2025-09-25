@@ -7,8 +7,7 @@
 
 using namespace std;
 
-void Market::readInput()
-{
+void Market::readInput() {
   string temp;
   getline(cin, temp); // remove comment line
 
@@ -28,8 +27,7 @@ void Market::readInput()
   // use helper functions to read in rest based on inputMode
   if (inputMode == 0)
     processInput(cin);
-  else
-  {
+  else {
     stringstream ss;
 
     cin >> temp >> temp;
@@ -46,8 +44,7 @@ void Market::readInput()
   }
 }
 
-void Market::processInput(istream &inputStream)
-{
+void Market::processInput(istream &inputStream) {
   string Ktime_stamp;
   string Kintent;
   string Ktrader_id;
@@ -58,8 +55,7 @@ void Market::processInput(istream &inputStream)
   size_t t = 0;
   size_t priority = 0;
 
-  while (inputStream >> Ktime_stamp >> Kintent >> Ktrader_id >> Kstock_id >> Kcost >> Kinventory)
-  {
+  while (inputStream >> Ktime_stamp >> Kintent >> Ktrader_id >> Kstock_id >> Kcost >> Kinventory) {
     // size_t stock_num = static_cast<size_t>(stoi(Kstock_id.substr(1)));
     int trader_id_int = (stoi(Ktrader_id.substr(1)));
     int stock_id_int = (stoi(Kstock_id.substr(1)));
@@ -69,39 +65,25 @@ void Market::processInput(istream &inputStream)
     bool intent = 0;
 
     // cerrs
-    if (!inputMode) // TL mode
-    {
-      if (time_int < 0)
-      {
+    if (!inputMode) { // TL Mode
+      if (time_int < 0){
         cerr << "Error: Negative timestamp" << endl;
         exit(1);
-      }
-      else if (static_cast<size_t>(time_int) > t)
-      {
+      } else if (static_cast<size_t>(time_int) > t) {
         t = static_cast<size_t>(time_int);
-      }
-      else if (static_cast<size_t>(time_int) < t)
-      {
+      } else if (static_cast<size_t>(time_int) < t) {
         cerr << "Error: Decreasing timestamp" << endl;
         exit(1);
-      }
-      else if (trader_id_int < 0 || static_cast<size_t>(trader_id_int) >= num_traders)
-      {
+      } else if (trader_id_int < 0 || static_cast<size_t>(trader_id_int) >= num_traders) {
         cerr << "Error: Invalid trader ID" << endl;
         exit(1);
-      }
-      else if (stock_id_int < 0 || static_cast<size_t>(stock_id_int) >= num_stocks)
-      {
+      } else if (stock_id_int < 0 || static_cast<size_t>(stock_id_int) >= num_stocks) {
         cerr << "Error: Invalid stock ID" << endl;
         exit(1);
-      }
-      else if (quantity_int < 0)
-      {
+      } else if (quantity_int < 0) {
         cerr << "Error: Invalid price" << endl;
         exit(1);
-      }
-      else if (price_int < 0)
-      {
+      } else if (price_int < 0) {
         cerr << "Error: Invalid quantity" << endl;
         exit(1);
       }
@@ -117,7 +99,7 @@ void Market::processInput(istream &inputStream)
       intent = 1;
 
     // create trader object to place into Market
-    Trader input{
+    Trader input {
         time,
         priority,
         intent,

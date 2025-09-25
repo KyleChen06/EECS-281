@@ -10,8 +10,7 @@ using namespace std;
 // Process the command line; there is no return value, but the Options
 // struct is passed by reference and is modified by this function to send
 // information back to the calling function.
-void Market::getOptions(int argc, char **argv)
-{
+void Market::getOptions(int argc, char **argv) {
   // These are used with getopt_long()
   opterr = static_cast<int>(false); // Let us handle all error output for command line options
   int choice = 0;
@@ -28,10 +27,8 @@ void Market::getOptions(int argc, char **argv)
   }; // longOptions[]
   // NOLINTEND
 
-  while ((choice = getopt_long(argc, argv, "vmith", static_cast<option *>(longOptions), &index)) != -1)
-  {
-    switch (choice)
-    {
+  while ((choice = getopt_long(argc, argv, "vmith", static_cast<option *>(longOptions), &index)) != -1) {
+    switch (choice) {
     case 'h':
       // printHelp(*argv);
       break;

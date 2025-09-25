@@ -3,8 +3,7 @@
 
 #include "stock_market.hpp"
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
   std::ios_base::sync_with_stdio(false);
 
   Market market(argc, argv);
