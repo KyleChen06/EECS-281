@@ -13,7 +13,7 @@ public:
   Market(int argc, char **argv);
 
   // traders do their trades
-  void Trade();
+  void trade();
 
 private:
   bool inputMode = 0; // 0 = TL, 1 = PR
@@ -25,31 +25,78 @@ private:
   struct Trader
   {
     size_t time;
+    size_t priority;
+    bool intent; // false == sell, true == buy
     size_t id;
+    size_t stock;
     size_t inventory;
     size_t price;
-    size_t priority;
+  };
 
-    // TODO: make a functor for comparisons
-    bool operator<(const Trader &other) const
+  // keep track of information for trader info
+  struct Trader_Info
+  {
+    size_t bought = 0;
+    size_t sold = 0;
+    int net = 0;
+  };
+
+  // we want highest price first because sellers want to sell at highest price
+  struct BuyerComp
+  {
+    bool operator()(const Trader &left, const Trader &right) const
     {
-      if (this->time == other.time)
-        return this->priority > other.priority;
+      if (left.price == right.price)
+      {
+        if (left.time == right.time)
+          return left.priority > right.priority;
+        else
+          return left.time > right.time;
+      }
       else
-        return this->time > other.time;
+        return left.price < right.price;
     }
   };
 
-  struct Stock // will have multiple different types
+  // we want lowest price first because buyers want to buy at lowest price
+  struct SellerComp
   {
-    std::priority_queue<Trader> buyers;
-    std::priority_queue<Trader> sellers;
+    bool operator()(const Trader &left, const Trader &right) const
+    {
+      if (left.price == right.price)
+      {
+        if (left.time == right.time)
+          return left.priority > right.priority;
+        else
+          return left.time > right.time;
+      }
+      else
+        return left.price > right.price;
+    }
+  };
+
+  // different stocks hold different information
+  struct Stock
+  {
+    std::priority_queue<Trader, std::vector<Trader>, BuyerComp> buyers;
+    std::priority_queue<Trader, std::vector<Trader>, SellerComp> sellers;
+    size_t num_traded = 0;
+    size_t selling = 0;
+    size_t buying = 0;
+    // time traveler info
+    size_t price1;
+    size_t price2;
+    size_t timestamp1 = 0;
+    size_t timestamp2 = 0;
   };
 
   size_t num_traders;
   size_t num_stocks;
   std::vector<Stock> stocks; // .resize based on input, vector index will be stock #
+  std::queue<Trader> waiting;
+  std::vector<Trader_Info> trader_info;
   size_t current_timestamp = 0;
+  size_t completed_trades = 0;
 
   // PR MODE pvs
   size_t seed, num_orders, arr_rate;
@@ -61,6 +108,13 @@ private:
   void readInput();
 
   void processInput(std::istream &inputStream);
+
+  // outputs
+  void trader_info_output();
+  void time_traveler_output();
+
+  // trade() helpers
+  void process_trade(Stock &stock, size_t stock_id);
 };
 
 #endif

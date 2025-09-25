@@ -9,7 +9,7 @@
       "request": "launch",
       "name": "Input Test",
       "program": "${workspaceFolder}/market_debug",
-      "args": [],
+      "args": ["-vit"],
       "stdio": [
         "spec-input-TL.txt",
         null,

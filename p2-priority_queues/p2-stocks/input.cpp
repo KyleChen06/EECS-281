@@ -18,6 +18,8 @@ void Market::readInput()
 
   cin >> temp >> temp; // get number of traders
   num_traders = static_cast<size_t>(stoi(temp));
+  if (i_out)
+    trader_info.resize(num_traders);
 
   cin >> temp >> temp; // get number of stocks
   num_stocks = static_cast<size_t>(stoi(temp));
@@ -46,38 +48,87 @@ void Market::readInput()
 
 void Market::processInput(istream &inputStream)
 {
-  string time_stamp;
-  string intent;
-  string trader_id;
-  string stock_id;
-  string cost;
-  string inventory;
+  string Ktime_stamp;
+  string Kintent;
+  string Ktrader_id;
+  string Kstock_id;
+  string Kcost;
+  string Kinventory;
 
-  while (inputStream >> time_stamp >> intent >> trader_id >> stock_id >> cost >> inventory)
+  size_t t = 0;
+  size_t priority = 0;
+
+  while (inputStream >> Ktime_stamp >> Kintent >> Ktrader_id >> Kstock_id >> Kcost >> Kinventory)
   {
-    size_t stock_num = static_cast<size_t>(stoi(stock_id.substr(1)));
-    size_t priority;
-    if (intent[0] == 'B')
+    // size_t stock_num = static_cast<size_t>(stoi(Kstock_id.substr(1)));
+    int trader_id_int = (stoi(Ktrader_id.substr(1)));
+    int stock_id_int = (stoi(Kstock_id.substr(1)));
+    int price_int = (stoi(Kcost.substr(1)));
+    int quantity_int = (stoi(Kinventory.substr(1)));
+    int time_int = (stoi(Ktime_stamp));
+    bool intent = 0;
+
+    // cerrs
+    if (!inputMode) // TL mode
     {
-      priority = stocks[stock_num].buyers.size();
+      if (time_int < 0)
+      {
+        cerr << "Error: Negative timestamp" << endl;
+        exit(1);
+      }
+      else if (static_cast<size_t>(time_int) > t)
+      {
+        t = static_cast<size_t>(time_int);
+      }
+      else if (static_cast<size_t>(time_int) < t)
+      {
+        cerr << "Error: Decreasing timestamp" << endl;
+        exit(1);
+      }
+      else if (trader_id_int < 0 || static_cast<size_t>(trader_id_int) >= num_traders)
+      {
+        cerr << "Error: Invalid trader ID" << endl;
+        exit(1);
+      }
+      else if (stock_id_int < 0 || static_cast<size_t>(stock_id_int) >= num_stocks)
+      {
+        cerr << "Error: Invalid stock ID" << endl;
+        exit(1);
+      }
+      else if (quantity_int < 0)
+      {
+        cerr << "Error: Invalid price" << endl;
+        exit(1);
+      }
+      else if (price_int < 0)
+      {
+        cerr << "Error: Invalid quantity" << endl;
+        exit(1);
+      }
     }
-    else
-    {
-      priority = stocks[stock_num].sellers.size();
-    }
-    // size_t priority = (intent.front() == 'B') ? stocks[stock_num].buyers.size() : stocks[stock_num].sellers.size();
-    bool buy = (intent.front() == 'B') ? true : false;
+
+    size_t trader_id = static_cast<size_t>(stoi(Ktrader_id.substr(1)));
+    size_t stock_id = static_cast<size_t>(stoi(Kstock_id.substr(1)));
+    size_t price = static_cast<size_t>(stoi(Kcost.substr(1)));
+    size_t quantity = static_cast<size_t>(stoi(Kinventory.substr(1)));
+    size_t time = static_cast<size_t>(stoi(Ktime_stamp));
+
+    if (Kintent[0] == 'B')
+      intent = 1;
 
     // create trader object to place into Market
     Trader input{
-        static_cast<size_t>(stoi(time_stamp)),
-        static_cast<size_t>(stoi(trader_id.substr(1))),
-        static_cast<size_t>(stoi(inventory.substr(1))),
-        static_cast<size_t>(stoi(cost.substr(1))),
+        time,
         priority,
+        intent,
+        trader_id,
+        stock_id,
+        quantity,
+        price,
     };
 
-    // put the trader/stock into the corresponding stock, and assign it to buyer/seller
-    (buy) ? stocks[stock_num].buyers.push(input) : stocks[stock_num].sellers.push(input);
+    // push all into priority queue
+    waiting.push(input);
+    priority++;
   }
 }
