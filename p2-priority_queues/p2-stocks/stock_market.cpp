@@ -35,6 +35,21 @@ void Market::trade() {
 
       waiting.pop();
     } // while (.top().time)
+
+    // median outputs
+    if (m_out){
+      for(size_t i = 0; i < stocks.size(); i++){
+        size_t median = 0;
+        if (stocks[i].num_traded == 0)
+          continue;
+        else if (stocks[i].num_traded % 2 == 0)
+          median = (stocks[i].right.top() + stocks[i].left.top()) / 2;
+        else
+          median = (stocks[i].right.size() > stocks[i].left.size()) ? stocks[i].right.top() : stocks[i].left.top();
+
+        cout << "Median match price of Stock " << i << " at time " << current_timestamp << " is $" << median << '\n';
+      }
+    }
     current_timestamp++;
   } // while (.empty())
 
@@ -84,12 +99,22 @@ void Market::process_trade(Stock &stock, size_t stock_id) {
       stock.buyers.pop();
       seller.inventory -= quantity;
       stock.sellers.pop();
-      stock.sellers.push(seller);
+      if(seller.inventory > 0)
+        stock.sellers.push(seller);
     } else {
       stock.sellers.pop();
       buyer.inventory -= quantity;
       stock.buyers.pop();
-      stock.buyers.push(buyer);
+      if(buyer.inventory > 0)
+        stock.buyers.push(buyer);
+    }
+
+    // add to pq for median
+    if (m_out) {
+      if(stock.right.size() > stock.left.size())
+        stock.left.push(price);
+      else
+        stock.right.push(price);
     }
 
     if (v_out)
@@ -98,11 +123,11 @@ void Market::process_trade(Stock &stock, size_t stock_id) {
 
     if (i_out) {
       // buyer
-      trader_info[buyer.id].bought += static_cast<int>(quantity);
+      trader_info[buyer.id].bought += quantity;
       trader_info[buyer.id].net -= static_cast<int>(quantity * price);
 
       // seller
-      trader_info[seller.id].sold += static_cast<int>(quantity);
+      trader_info[seller.id].sold += quantity;
       trader_info[seller.id].net += static_cast<int>(quantity * price);
     }
 

@@ -80,10 +80,10 @@ void Market::processInput(istream &inputStream) {
       } else if (stock_id_int < 0 || static_cast<size_t>(stock_id_int) >= num_stocks) {
         cerr << "Error: Invalid stock ID" << endl;
         exit(1);
-      } else if (quantity_int < 0) {
+      } else if (quantity_int <= 0) {
         cerr << "Error: Invalid price" << endl;
         exit(1);
-      } else if (price_int < 0) {
+      } else if (price_int <= 0) {
         cerr << "Error: Invalid quantity" << endl;
         exit(1);
       }

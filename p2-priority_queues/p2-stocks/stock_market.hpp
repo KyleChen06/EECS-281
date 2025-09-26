@@ -76,6 +76,9 @@ private:
     size_t price2;
     size_t timestamp1 = 0;
     size_t timestamp2 = 0;
+    // median info
+    std::priority_queue<size_t, std::vector<size_t>, std::greater<size_t>> right;
+    std::priority_queue<size_t, std::vector<size_t>, std::greater<size_t>> left;
   };
 
   size_t num_traders;

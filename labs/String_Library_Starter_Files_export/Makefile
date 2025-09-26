@@ -28,10 +28,10 @@ UNIQNAME    = kylechen
 
 # Change the right hand side of the identifier to match the project identifier
 # given in the project or lab specification.
-IDENTIFIER  = 43DE0E0C4C76BFAA6D8C2F5AEAE0518A9C251F4E
+IDENTIFIER  = 5AE7C079A8BF493DDDB6EF76D42136D183D8D7A8
 
 # Change 'executable' to match the command name given in the project spec.
-EXECUTABLE  = project2b
+EXECUTABLE  = strlib
 
 # The following line looks for a project's main() in files named project*.cpp,
 # executable.cpp (substituted from EXECUTABLE above), or main.cpp

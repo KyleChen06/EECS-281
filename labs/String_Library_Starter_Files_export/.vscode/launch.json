@@ -7,17 +7,9 @@
     {
       "type": "lldb",
       "request": "launch",
-      "name": "Input Test",
-      "program": "${workspaceFolder}/market_debug",
-      "args": ["-vmit"],
-      "stdio": [
-        "spec-input-TL.txt",
-        null,
-        null
-      ],
-      "env": {
-        "ASAN_OPTIONS": "abort_on_error=1:detect_leaks=0"
-      },
+      "name": "Launch",
+      "program": "${workspaceFolder}/strlib_debug",
+      "args": [],
       "cwd": "${workspaceFolder}"
     }
 
